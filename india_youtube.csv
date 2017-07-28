@@ -1,0 +1,2 @@
+Index,dns_ip,cont_ip,my_ip,dns_iso,content_iso,me_iso,cnd_count_km,me_count_km,dns_as,cont_as,cont_hst,dns_loc,content_loc,me_loc
+01.01,139.5.35.58,115.254.97.15,196.55.2.7,IN,IN,IN,1422,1158,AS134785 PRESTIGE NETWORK LIMITED,AS18101 Reliance Communication Ltd 20060606,r4---sn-gxap5ojx-qxae.googlevideo.com,"[31.6331, 74.8656]","[18.975, 72.8258]","[28.6, 77.2]"

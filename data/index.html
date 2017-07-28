@@ -1,0 +1,39 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<div id="mytable">
+ <table>
+<thead>
+<tr><th>Index  </th><th>dns_ip        </th><th>cont_ip       </th><th>my_ip         </th><th>dns_iso  </th><th>content_iso  </th><th>me_iso  </th><th style="text-align: right;">  cnd_count_km</th><th style="text-align: right;">  me_count_km</th><th>dns_as                                     </th><th>cont_as                </th><th>cont_hst    </th></tr>
+</thead>
+<tbody>
+<tr><td>02.01  </td><td>192.95.54.1   </td><td>174.35.73.166 </td><td>173.239.214.15</td><td>CA       </td><td>US           </td><td>US      </td><td style="text-align: right;">          4073</td><td style="text-align: right;">         3215</td><td>AS16276 OVH SAS                            </td><td>AS36408 CDNetworks Inc.</td><td>md1.libe.com</td></tr>
+<tr><td>03.01  </td><td>209.88.198.133</td><td>91.194.205.17 </td><td>173.239.214.15</td><td>IL       </td><td>NL           </td><td>US      </td><td style="text-align: right;">          3296</td><td style="text-align: right;">         6359</td><td>AS1680 013 NetVision Ltd                   </td><td>AS36408 CDNetworks Inc.</td><td>md1.libe.com</td></tr>
+<tr><td>04.01  </td><td>37.235.1.177  </td><td>151.249.89.221</td><td>173.239.214.15</td><td>AT       </td><td>DE           </td><td>US      </td><td style="text-align: right;">           597</td><td style="text-align: right;">         6715</td><td>AS51453 ANEXIA Internetdienstleistungs GmbH</td><td>AS36408 CDNetworks Inc.</td><td>md1.libe.com</td></tr>
+<tr><td>05.01  </td><td>64.6.65.6     </td><td>174.35.97.95  </td><td>173.239.214.15</td><td>US       </td><td>US           </td><td>US      </td><td style="text-align: right;">          3867</td><td style="text-align: right;">         3215</td><td>AS36627 VeriSign Global Registry Services  </td><td>AS36408 CDNetworks Inc.</td><td>md1.libe.com</td></tr>
+<tr><td>06.01  </td><td>77.88.8.8     </td><td>151.249.91.224</td><td>173.239.214.15</td><td>RU       </td><td>SE           </td><td>US      </td><td style="text-align: right;">           688</td><td style="text-align: right;">         6657</td><td>AS13238 YANDEX LLC                         </td><td>AS36408 CDNetworks Inc.</td><td>md1.libe.com</td></tr>
+<tr><td>07.01  </td><td>84.200.69.80  </td><td>91.194.204.149</td><td>173.239.214.15</td><td>DE       </td><td>NL           </td><td>US      </td><td style="text-align: right;">           337</td><td style="text-align: right;">         6359</td><td>AS31400 Accelerated IT Services GmbH       </td><td>AS36408 CDNetworks Inc.</td><td>md1.libe.com</td></tr>
+<tr><td>08.01  </td><td>89.233.43.71  </td><td>151.249.91.214</td><td>173.239.214.15</td><td>DK       </td><td>SE           </td><td>US      </td><td style="text-align: right;">           577</td><td style="text-align: right;">         6657</td><td>AS9167 Telia Company AB                    </td><td>AS36408 CDNetworks Inc.</td><td>md1.libe.com</td></tr>
+<tr><td>avg    </td><td>              </td><td>              </td><td>              </td><td>         </td><td>             </td><td>        </td><td style="text-align: right;">          1920</td><td style="text-align: right;">         5597</td><td>                                           </td><td>                       </td><td>            </td></tr>
+</tbody>
+</table>
+ </div>
+
+<script>
+$( document ).ready(function() {
+$("#mytable table").addClass("table table-striped table-bordered table-hover");
+});
+</script>
+
+</body>
+</html> 
