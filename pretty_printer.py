@@ -29,14 +29,18 @@ def write_output(data, output_file, custom_output_format):
         os.mkdir(base_patrh)
 
     for output_format in set(["plain", "latex", "html"] + [custom_output_format]):
+
+        data_pretty = {k: v for k, v in data.items() if
+                       route_to_content not in ["Index", "cont_hst", "dns_loc", "content_loc", "me_loc",
+                                                "route_to_content"]}
         formatted_output_path = "%s.%s" % (output_file, output_format)
         back_file_if_exist(formatted_output_path)
         with open(formatted_output_path, "w") as f:
 
             if output_format == "html":
-                f.write(handle_html(data))
+                f.write(handle_html(data_pretty))
             else:
-                f.write(tabulate(data, tablefmt=output_format, headers="keys"))
+                f.write(tabulate(data_pretty, tablefmt=output_format, headers="keys"))
 
     # raw data written in csv-file
 
@@ -46,8 +50,8 @@ def write_output(data, output_file, custom_output_format):
         writer = csv.DictWriter(f, fieldnames=data[0].keys())
         writer.writeheader()
         writer.writerows(data[:-1])
-    for aformat in ["eps","png"]:
-        map_output_path = "%s.%s" % (output_file,aformat)
+    for aformat in ["eps", "png"]:
+        map_output_path = "%s.%s" % (output_file, aformat)
         back_file_if_exist(map_output_path)
         draw_map("%s.csv" % output_file, map_output_path)
 

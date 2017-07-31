@@ -38,7 +38,7 @@ def draw_map(input, output):
         for k, (dns_hop, content_hop, me_hop, routes) in data.items():
 
             my_lat, my_long = m(me_hop[1][1], me_hop[1][0])
-            m.scatter(my_lat, my_long, 30, marker='o', color=colors[k], zorder=100)
+            m.scatter(my_lat, my_long, 100, marker='H', color="black", zorder=120)
 
             hop1_lat, hop1_long = m(content_hop[1][1], content_hop[1][0], )
             m.scatter(hop1_lat, hop1_long, 30, marker='X', color=colors[k], zorder=100)

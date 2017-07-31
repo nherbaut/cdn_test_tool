@@ -180,4 +180,6 @@ if __name__ == "__main__":
         "route_to_content": "",
 
     })
+
+
     write_output(data, args.output_file, args.output_format)
