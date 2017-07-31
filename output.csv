@@ -1,2 +1,0 @@
-Index,dns_ip,cont_ip,my_ip,dns_iso,content_iso,me_iso,cnd_count_km,me_count_km,dns_as,cont_as,cont_hst,dns_loc,content_loc,me_loc
-01.01,192.95.54.3,174.35.76.28,196.55.2.7,CA,US,IN,4065,12417,AS16276 OVH SAS,AS36408 CDNetworks Inc.,md1.libe.com,"[45.504, -73.5747]","[37.3388, -121.8914]","[28.6, 77.2]"

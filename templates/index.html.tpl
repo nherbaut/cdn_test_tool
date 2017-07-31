@@ -10,11 +10,13 @@
 
 </head>
 <body>
+<center>
 
+<center>
 <div id="mytable">
  {{ table }}
  </div>
-
+<img class="img-responsive" src="output.png" />
 <script>
 $( document ).ready(function() {
 $("#mytable table").addClass("table table-striped table-bordered table-hover");

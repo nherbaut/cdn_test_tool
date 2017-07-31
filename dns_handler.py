@@ -9,7 +9,7 @@ import logging
 
 def update_bind9_dns(dns_server):
     import os
-    with open("named.conf.options.tpl", "r") as f:
+    with open("templates/named.conf.options.tpl", "r") as f:
         t = Template(f.read())
         with open("/etc/bind/named.conf.options", "w") as bind_conf_file:
             bind_conf_file.write(t.render(dns_server=dns_server))
