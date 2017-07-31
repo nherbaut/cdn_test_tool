@@ -18,6 +18,20 @@ logging.basicConfig(filename='anycastip.log', level=logging.DEBUG)
 # limit the number of server we investigate when several server are returned by a DNS query
 A_SERVERS_LIMIT = 1
 
+from scapy.all import *
+
+
+def get_route_to(ip):
+    try:
+        result, _ = traceroute(ip, l4=UDP(sport=RandShort()))
+        ips = [v[0] for k, v in
+               sorted(result.get_trace()[ip].items(), key=lambda x: x[0])]
+        print(ips)
+        return list(filter(lambda x: x[1] is not None, [(ip, extract_geoloc_data_ipinfo(ip)["location"]) for ip in
+                                                        ips[1:]]))
+    except:
+        return None
+
 
 def get_distance_in_km(server1, server2):
     if server1.get("location", None) is not None and server2.get("location", None) is not None:
@@ -132,6 +146,7 @@ if __name__ == "__main__":
                     "dns_loc": dns_server_infos["location"],
                     "content_loc": resolved_infos["location"],
                     "me_loc": client_infos["location"],
+                    "route_to_content": get_route_to(resolved_infos["ip"])
                 })
 
         except (dns.exception.Timeout, MissingDataError)  as e:
@@ -161,7 +176,8 @@ if __name__ == "__main__":
         "me_count_km": avg_distance_me,
         "dns_as": "",
         "cont_as": "",
-        "cont_hst": ""
+        "cont_hst": "",
+        "route_to_content": "",
 
     })
     write_output(data, args.output_file, args.output_format)

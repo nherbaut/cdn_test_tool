@@ -12,8 +12,11 @@ RUN wget https://github.com/matplotlib/basemap/archive/v1.1.0.zip
 RUN unzip v1.1.0.zip
 WORKDIR /basemap-1.1.0
 RUN python ./setup.py install
-RUN pip install pyproj
-RUN echo "#!/usr/bin/env bash \n cd /root \n ./dns_handler.py -s 8.8.8.8 \n /root/anycast.py \"\$@\" " > /root/bootstrap.sh
+RUN pip install pyproj scapy-python3
+RUN echo "nameserver 127.0.0.1" > /etc/resolv.conf
+RUN echo "#!/usr/bin/env bash \n cd /root \n ./dns_handler.py -s 8.8.8.8 \n /root/anycast.py --use_bind9 \"\$@\" " > /root/bootstrap.sh
+RUN mkdir -p /root/.config/matplotlib/
+RUN echo "backend : Agg" > /root/.config/matplotlib/matplotlibrc
 RUN chmod +x /root/bootstrap.sh
 RUN mkdir /root/res
 COPY db/* /root/db/
