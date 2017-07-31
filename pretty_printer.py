@@ -50,7 +50,7 @@ def write_output(data, output_file, custom_output_format):
         writer = csv.DictWriter(f, fieldnames=data[0].keys())
         writer.writeheader()
         writer.writerows(data[:-1])
-    for aformat in ["eps", "png"]:
+    for aformat in ["eps", "png","svg"]:
         map_output_path = "%s.%s" % (output_file, aformat)
         back_file_if_exist(map_output_path)
         draw_map("%s.csv" % output_file, map_output_path)
