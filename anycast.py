@@ -52,7 +52,9 @@ if __name__ == "__main__":
     parser.add_argument('--timeout', default=1, type=float,
                         help='Timeout for the DNS queries')
     parser.add_argument('-c', '--countries', nargs='+', help='a list of countries to select the DNS from', default=None)
-    parser.add_argument('--limit', default=10, type=int,
+    parser.add_argument('--dns-list', help='list of dns to use e.g. americas, eu, asia', default="eu")
+
+    parser.add_argument('--limit', default=99, type=int,
                         help='Maximum number of dns servers to query')
     parser.add_argument('--use_bind9', action='store_true',
                         help='use bind9 to change DNS resolver')
@@ -60,17 +62,16 @@ if __name__ == "__main__":
                         help='use bind9 to change DNS resolver')
     parser.add_argument('--output-format', default="plain",
                         help='format of the output, one of "plain, simple, grid, fancy_grid, pipe, orgtbl, jira, psql, rst, mediawiki, moinmoin, html, latex, latex_booktabs, textile"')
-    parser.add_argument('-dns-db', help="name of the dns database file",
-                        default="./db/nameservers.csv")
     parser.add_argument('-output-file', help="name of the file where to write output",
                         default="./res/output")
 
     args = parser.parse_args()
 
     client_infos = extract_geoloc_data_ipinfo("")
+    dns_db_path="db/nameservers_%s.csv" % args.dns_list
 
     if args.list_countries is True:
-        with open(args.dns_db, "r") as f:
+        with open(dns_db_path, "r") as f:
             # print(" ".join(["%s(%3d)" % (k, v) for k, v insorted(Counter(line[2] for line in list(csv.reader(f))).items(), key=lambda x: -x[1])]))
             print(" ".join(sorted({line[2] for line in list(csv.reader(f))})))
             exit(0)
@@ -80,11 +81,11 @@ if __name__ == "__main__":
     # if we require a specific list of countries
     if args.countries is not None:
         dnsips = [ipdata for country in args.countries for ipdata in
-                  get_dns_ip_by_country(country, args.dns_db)[:args.limit]]
+                  get_dns_ip_by_country(country, dns_db_path)[:args.limit]]
     else:
         # if we didn't specifies a target dns_server to test
         if args.dns_servers is None:
-            with open(args.dns_db) as f:
+            with open(dns_db_path) as f:
                 reader = csv.reader(f)
                 dnsips = list(reader)[:args.limit]
 
@@ -180,6 +181,4 @@ if __name__ == "__main__":
         "route_to_content": "",
 
     })
-
-
     write_output(data, args.output_file, args.output_format)

@@ -30,9 +30,9 @@ def write_output(data, output_file, custom_output_format):
 
     for output_format in set(["plain", "latex", "html"] + [custom_output_format]):
 
-        data_pretty = {k: v for k, v in data.items() if
-                       route_to_content not in ["Index", "cont_hst", "dns_loc", "content_loc", "me_loc",
-                                                "route_to_content"]}
+        data_pretty = [{k: v for k, v in item.items() if
+                        k not in ["Index", "cont_hst", "dns_loc", "content_loc", "me_loc",
+                                                 "route_to_content"]} for item in data]
         formatted_output_path = "%s.%s" % (output_file, output_format)
         back_file_if_exist(formatted_output_path)
         with open(formatted_output_path, "w") as f:
