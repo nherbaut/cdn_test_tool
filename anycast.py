@@ -52,7 +52,7 @@ if __name__ == "__main__":
     parser.add_argument('--timeout', default=1, type=float,
                         help='Timeout for the DNS queries')
     parser.add_argument('-c', '--countries', nargs='+', help='a list of countries to select the DNS from', default=None)
-    parser.add_argument('--dns-list', help='list of dns to use e.g. americas, eu, asia', default="eu")
+    parser.add_argument('--dns-list', help='list of dns to use e.g. americas, eu, asia, world', default="world")
 
     parser.add_argument('--limit', default=99, type=int,
                         help='Maximum number of dns servers to query')
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     client_infos = extract_geoloc_data_ipinfo("")
-    dns_db_path="db/nameservers_%s.csv" % args.dns_list
+    dns_db_path = "db/nameservers_%s.csv" % args.dns_list
 
     if args.list_countries is True:
         with open(dns_db_path, "r") as f:
