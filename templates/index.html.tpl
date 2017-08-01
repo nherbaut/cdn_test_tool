@@ -26,10 +26,11 @@
 <script>
 $( document ).ready(function() {
 $("#mytable table").addClass("table table-striped table-bordered table-hover");
-  svgPanZoom('#worldmap', {
-          zoomEnabled: true,
-          controlIconsEnabled: true
-        });
+$("#worldmap").bind('load', function(){svgPanZoom('#worldmap', {zoomEnabled: true,controlIconsEnabled: true});});
+
+
+
+
 });
 </script>
 
