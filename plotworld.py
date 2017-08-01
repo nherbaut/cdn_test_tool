@@ -29,7 +29,7 @@ def draw_map(input, output):
                 routes = []
                 logging.error("failed to compute routes for %s " % row["Index"])
             data[row["dns_iso"]] = [(row["dns_ip"], [dns_lon, dns_lat]), (row["cont_ip"], [content_lon, content_lat]),
-                          (row["my_ip"], [me_lon, me_lat]), routes]
+                                    (row["my_ip"], [me_lon, me_lat]), routes]
 
         m = Basemap(projection='merc', llcrnrlat=-80, urcrnrlat=80, \
                     llcrnrlon=-180, urcrnrlon=180, lat_ts=20, resolution='c')
@@ -40,16 +40,17 @@ def draw_map(input, output):
         names = data.keys()
         colors = dict(zip(names, cmap(np.linspace(0, 1, len(names)))))
 
+        me_hop = list(data.values())[0][3][1]
+        my_lat, my_long = m(me_hop[1][1], me_hop[1][0])
+        m.scatter(my_lat, my_long, 30, marker='H', color="black", zorder=120, label="client")
+
         for k, (dns_hop, content_hop, me_hop, routes) in data.items():
 
-            my_lat, my_long = m(me_hop[1][1], me_hop[1][0])
-            m.scatter(my_lat, my_long, 10, marker='H', color="black", zorder=120)
-
             hop1_lat, hop1_long = m(content_hop[1][1], content_hop[1][0], )
-            m.scatter(hop1_lat, hop1_long, 10, marker='o', color=colors[k], zorder=100,label=k)
+            m.scatter(hop1_lat, hop1_long, 20, marker='o', color=colors[k], zorder=100, label="%s Content" % k)
 
             hop1_lat, hop1_long = m(dns_hop[1][1], dns_hop[1][0], )
-            m.scatter(hop1_lat, hop1_long, 5, marker='X', color=colors[k], zorder=100)
+            m.scatter(hop1_lat, hop1_long, 10, marker='^', color=colors[k], zorder=100, label="%s DNS" % k)
 
             m.plot([my_lat, hop1_lat], [my_long, hop1_long], zorder=3, color=colors[k], linestyle="dashed", lw=0.5)
 
