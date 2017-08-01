@@ -13,7 +13,7 @@ RUN echo "backend : Agg" > /root/.config/matplotlib/matplotlibrc
 RUN chmod +x /root/bootstrap.sh
 RUN mkdir /root/res
 COPY assets/js /root/assets/js
-COPY assets/css /root/assets/js
+COPY assets/css /root/assets/css
 COPY db/* /root/db/
 COPY data/* /root/data/
 COPY templates/* /root/templates/
