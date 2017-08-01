@@ -5,7 +5,7 @@ import subprocess
 country = requests.get("http://ipinfo.io").json()["country"]
 print("#connecting from %s" % country)
 print("#pase this to launch the experiment")
-tpl = "sudo docker run -d -v $PWD/%s/%s_%s:/root/res  nherbaut/anycastip  -t %s "
+tpl = "sudo docker run -d -v $PWD/%s/%s_%s:/root/res  nherbaut/anycastip --limit 1 -c FR GB DE IT ES PT IE PL SE NO FI CH  -t %s "
 data = {"airbnb": "a0.muscache.com",
         "ebay.com": "i.ebayimg.com",
         "www.wikipedia.org": "www.wikipedia.org",

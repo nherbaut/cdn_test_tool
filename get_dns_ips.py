@@ -1,8 +1,9 @@
 #! /usr/bin/env python3
 
 import argparse
-import random
 import json
+import random
+
 import requests
 
 if __name__ == "__main__":
@@ -22,11 +23,12 @@ if __name__ == "__main__":
         description='get a list of DNS countries from https://public-dns.info')
     parser.add_argument('-c', '--countries', nargs='+', help='list of countries to download', default=EU28)
     parser.add_argument('-n', default=1, type=int, help='number of dns servers per countries')
-    parser.add_argument('-o', default="db/nameservers.txt", type=str, help='where to store the results')
+    parser.add_argument('db_path', nargs="?", type=str, help='where to store the results', default=None)
 
     args = parser.parse_args()
 
-    res = {}
+
+    res = []
     for country in args.countries:
         try:
             entries = list(filter(lambda x: x["reliability"] == 1 and ":" not in x["ip"],
@@ -35,10 +37,13 @@ if __name__ == "__main__":
             continue
         if len(entries) == 0:
             continue
-        entry = random.choice(entries)
-        res[country] = entry["ip"]
-        print("%s" % entry["ip"])
+        random.shuffle(entries)
+        res += entries[:args.n]
+        if args.db_path is None:
+            for e in entries[:args.n]:
+                print(e["ip"])
 
-    with open(args.o, "w") as f:
-        for ip in res.values():
-            f.write(ip + "\n")
+    if args.db_path is not None:
+        with open(args.db_path, "w") as f:
+            for entry in res:
+                f.write(entry["ip"] + "\n")
