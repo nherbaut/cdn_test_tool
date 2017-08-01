@@ -16,6 +16,9 @@ DST 		Daylight savings time. One of E (Europe), A (US/Canada), S (South America)
 """
 
 import re
+import json
+with open("db/iso3166-1.json") as f:
+    COUNTRIES_CODE = json.loads(f.read())["3166-1"]
 
 
 def findAirportNameByIATA(code):
@@ -60,4 +63,14 @@ def findAllByIATA(code):
         for line in reader:
             if re.search(code, line[4]):
                 return line
+    return "N/A"
+
+
+@functools.lru_cache()
+def get_country_code_by_name(full_name):
+    for country in COUNTRIES_CODE:
+
+        if country["name"] == full_name:
+            return country["alpha_2"]
+
     return "N/A"
