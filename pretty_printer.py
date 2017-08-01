@@ -1,12 +1,17 @@
 #! /usr/bin/env python3
 import csv
 import os
+import shutil
 from datetime import datetime
 
 from jinja2 import Template
 from tabulate import tabulate
 
 from plotworld import draw_map
+
+
+def copy_html_assets(dst):
+    shutil.copytree("assets", os.path.join(dst, "assets"))
 
 
 def handle_html(data):
@@ -32,13 +37,14 @@ def write_output(data, output_file, custom_output_format):
 
         data_pretty = [{k: v for k, v in item.items() if
                         k not in ["Index", "cont_hst", "dns_loc", "content_loc", "me_loc",
-                                                 "route_to_content"]} for item in data]
+                                  "route_to_content"]} for item in data]
         formatted_output_path = "%s.%s" % (output_file, output_format)
         back_file_if_exist(formatted_output_path)
         with open(formatted_output_path, "w") as f:
 
             if output_format == "html":
                 f.write(handle_html(data_pretty))
+                copy_html_assets(os.path.join(base_patrh))
             else:
                 f.write(tabulate(data_pretty, tablefmt=output_format, headers="keys"))
 
@@ -50,7 +56,7 @@ def write_output(data, output_file, custom_output_format):
         writer = csv.DictWriter(f, fieldnames=data[0].keys())
         writer.writeheader()
         writer.writerows(data[:-1])
-    for aformat in ["eps", "png","svg"]:
+    for aformat in ["eps", "png", "svg"]:
         map_output_path = "%s.%s" % (output_file, aformat)
         back_file_if_exist(map_output_path)
         draw_map("%s.csv" % output_file, map_output_path)

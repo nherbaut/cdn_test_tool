@@ -28,8 +28,7 @@ def draw_map(input, output):
             except SyntaxError:
                 routes = []
                 logging.error("failed to compute routes for %s " % row["Index"])
-            name = " ".join([row["dns_loc"], row["content_loc"], row["me_loc"]])
-            data[name] = [(row["dns_ip"], [dns_lon, dns_lat]), (row["cont_ip"], [content_lon, content_lat]),
+            data[row["dns_iso"]] = [(row["dns_ip"], [dns_lon, dns_lat]), (row["cont_ip"], [content_lon, content_lat]),
                           (row["my_ip"], [me_lon, me_lat]), routes]
 
         m = Basemap(projection='merc', llcrnrlat=-80, urcrnrlat=80, \
@@ -44,13 +43,13 @@ def draw_map(input, output):
         for k, (dns_hop, content_hop, me_hop, routes) in data.items():
 
             my_lat, my_long = m(me_hop[1][1], me_hop[1][0])
-            m.scatter(my_lat, my_long, 70, marker='H', color="black", zorder=120)
+            m.scatter(my_lat, my_long, 10, marker='H', color="black", zorder=120)
 
             hop1_lat, hop1_long = m(content_hop[1][1], content_hop[1][0], )
-            m.scatter(hop1_lat, hop1_long, 70, marker='o', color=colors[k], zorder=100)
+            m.scatter(hop1_lat, hop1_long, 10, marker='o', color=colors[k], zorder=100,label=k)
 
             hop1_lat, hop1_long = m(dns_hop[1][1], dns_hop[1][0], )
-            m.scatter(hop1_lat, hop1_long, 30, marker='X', color=colors[k], zorder=100)
+            m.scatter(hop1_lat, hop1_long, 5, marker='X', color=colors[k], zorder=100)
 
             m.plot([my_lat, hop1_lat], [my_long, hop1_long], zorder=3, color=colors[k], linestyle="dashed", lw=0.5)
 
@@ -58,11 +57,12 @@ def draw_map(input, output):
             for hop1, hop2 in zip(routes, routes[1:]):
                 hop1_lat, hop1_long = m(hop1[1][1], hop1[1][0], )
                 hop2_lat, hop2_long = m(hop2[1][1], hop2[1][0], )
-                m.scatter(hop2_lat, hop2_long, 10, marker='.', color=colors[k], zorder=110)
+                m.scatter(hop2_lat, hop2_long, 5, marker='.', color=colors[k], zorder=110)
                 m.plot([hop1_lat, hop2_lat], [hop1_long, hop2_long], lw=1, zorder=110, color=colors[k],
                        linestyle="solid")
 
         _, extension = os.path.splitext(output)
+        plt.legend()
         plt.savefig(output, format=extension[1:], dpi=1000)
 
 
