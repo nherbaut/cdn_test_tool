@@ -11,7 +11,8 @@ from plotworld import draw_map
 
 
 def copy_html_assets(dst):
-    shutil.copytree("assets", os.path.join(dst, "assets"))
+    if not os.path.exists(os.path.join(dst, "assets")):
+        shutil.copytree("assets", os.path.join(dst, "assets"))
 
 
 def handle_html(data):

@@ -87,7 +87,9 @@ if __name__ == "__main__":
         if args.dns_servers is None:
             with open(dns_db_path) as f:
                 reader = csv.reader(f)
-                dnsips = list(reader)[:args.limit]
+                data = list(reader)
+                random.shuffle(data)
+                dnsips = data[:args.limit]
 
         else:
             # take all the dns server we have
@@ -119,7 +121,8 @@ if __name__ == "__main__":
             # resolved_infos = extract_geoloc_data(resolved_ips[0])
             # resolved_infos = min([candiate_info for candiate_info in[extract_geoloc_data_ipinfo(resolved_ip) for resolved_ip in resolved_ips]],key=lambda x: get_distance_in_km(my_data, x))
             for resolved_info_index, resolved_infos in enumerate([candiate_info for candiate_info in
-                                                                  [extract_geoloc_data_ipinfo(resolved_ip) for
+                                                                  [extract_geoloc_data_ipinfo(resolved_ip,
+                                                                                              resolved_target) for
                                                                    resolved_ip in resolved_ips]][:A_SERVERS_LIMIT], 1):
                 asn = resolved_infos.get("org", "N/A")
                 distance_content_dns = get_distance_in_km(dns_server_infos, resolved_infos)
