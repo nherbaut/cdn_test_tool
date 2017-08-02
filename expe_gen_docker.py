@@ -18,5 +18,6 @@ data = {"airbnb": "a0.muscache.com",
         "live.com": "auth.gfx.ms",
         "youtube": "https://www.youtube.com/watch?v=9bZkp7q19f0",
         "twitch": "https://www.twitch.tv/videos/158047931"}
-for k, v in data.items():
+dummy={"youtube":"https://www.youtube.com/watch?v=9zNmBSstLDM"}
+for k, v in dummy.items():
     subprocess.call(tpl % (country, k, country, v), shell=True)

@@ -2,6 +2,7 @@
 import argparse
 import csv
 import logging
+import urllib.request
 
 import dns.resolver
 from geolite2 import geolite2
@@ -19,14 +20,16 @@ logging.basicConfig(filename='anycastip.log', level=logging.DEBUG)
 A_SERVERS_LIMIT = 1
 
 from scapy.all import *
-
+from collections import OrderedDict
 
 def get_route_to(ip):
     try:
-        result, _ = traceroute(ip, l4=UDP(sport=RandShort()))
+        #result, _ = traceroute(ip, l4=UDP(sport=RandShort()))
+        result, _ = traceroute(ip)
         ips = [v[0] for k, v in
                sorted(result.get_trace()[ip].items(), key=lambda x: x[0])]
-        print(ips)
+
+        ips=list(OrderedDict.fromkeys(ips))
         return list(filter(lambda x: x[1] is not None, [(ip, extract_geoloc_data_ipinfo(ip)["location"]) for ip in
                                                         ips[1:]]))
     except:
@@ -38,6 +41,11 @@ def get_distance_in_km(server1, server2):
         return haversine(server1["location"], server2["location"])
     else:
         raise MissingDataError()
+
+
+def fall_back_own_ip():
+    external_ip = urllib.request.urlopen('http://ident.me').read().decode('utf8')
+    return external_ip
 
 
 if __name__ == "__main__":
@@ -68,6 +76,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     client_infos = extract_geoloc_data_ipinfo("")
+    if client_infos["ip"] == '':
+        client_infos["ip"] = fall_back_own_ip()
+
     dns_db_path = "db/nameservers_%s.csv" % args.dns_list
 
     if args.list_countries is True:

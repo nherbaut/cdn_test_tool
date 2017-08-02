@@ -2,8 +2,10 @@ import csv
 import logging
 import subprocess
 import urllib
+from time import sleep
 
 import dns.resolver
+import requests
 
 from dns_handler import update_bind9_dns
 from exceptions import MissingDataError
@@ -44,7 +46,7 @@ def get_content_ips(dns_server, target=None, klass=dns.resolver.Resolver, timeou
             update_bind9_dns(dns_server)
             # else:
             # print("warning bind configuration not updated")
-        content_cache_server_url = get_cache_server_hostname_for_video(target).decode("ascii")
+        content_cache_server_url = get_cache_server_hostname_for_url(target)
 
         if content_cache_server_url is None:
             # print("failed to get cache server for %s" % target)
@@ -59,16 +61,34 @@ def get_dns_ip_by_country(country, db_path):
         return list(filter(lambda x: x[2] in [country], list(csv.reader(f))))
 
 
-def get_cache_server_hostname_for_video(video_url):
+def get_cache_server_hostname_for_url(content_url):
     '''
-    from a video url, use youtube-dl to know which is the hostname of the cache server
-    :param video_url:
+    from a content url, check if we can get the url from youtube-dl, if not, return the provided url after all the redirects have been issued
+    :param content_url:
     :return: the url of the cache server of None if it cannot be found
     '''
     try:
-        proc = subprocess.Popen(["youtube-dl", "-g", video_url], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(["youtube-dl", "-g", content_url], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        while proc.poll() is None:
+            sleep(0.1)
+
         logging.error(proc.stderr.read())
-        server_url = proc.stdout.read()
+        if proc.poll() == 0:
+            server_url = proc.stdout.read().decode("ascii").split("\n")[0]  # bug 2 URL returned?
+        else:
+            server_url = content_url
+
+        response = None
+        while response is None or response.status_code > 299:
+            response = requests.head(server_url, allow_redirects=False, headers={
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'})
+            if response.status_code > 299 and response.status_code < 399:
+                print("nope %s -> %s " % (server_url, response.headers["Location"]))
+                server_url = response.headers["Location"]
+
+            elif response.status_code > 399:
+                return None
+
         return urllib.parse.urlparse(server_url).netloc
     except subprocess.CalledProcessError as e:
         logging.error(e)
