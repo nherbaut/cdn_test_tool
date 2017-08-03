@@ -11,7 +11,7 @@ from haversine import haversine
 from content_extraction import get_content_ips, get_dns_ip_by_country
 from dns_handler import update_bind9_dns
 from exceptions import MissingDataError
-from geoloc import extract_geoloc_data_ipinfo, extract_geoloc_data_from_csv_line
+from geoloc import extract_geoloc_data, extract_geoloc_data_from_csv_line
 from pretty_printer import write_output
 
 logging.basicConfig(filename='anycastip.log', level=logging.DEBUG)
@@ -22,15 +22,20 @@ A_SERVERS_LIMIT = 1
 from scapy.all import *
 from collections import OrderedDict
 
+
 def get_route_to(ip):
+    return get_route_to_ip_scapy(ip)
+
+
+def get_route_to_ip_scapy(ip):
     try:
-        #result, _ = traceroute(ip, l4=UDP(sport=RandShort()))
+        # result, _ = traceroute(ip, l4=UDP(sport=RandShort()))
         result, _ = traceroute(ip)
         ips = [v[0] for k, v in
                sorted(result.get_trace()[ip].items(), key=lambda x: x[0])]
 
-        ips=list(OrderedDict.fromkeys(ips))
-        return list(filter(lambda x: x[1] is not None, [(ip, extract_geoloc_data_ipinfo(ip)["location"]) for ip in
+        ips = list(OrderedDict.fromkeys(ips))
+        return list(filter(lambda x: x[1] is not None, [(ip, extract_geoloc_data(ip)["location"]) for ip in
                                                         ips[1:]]))
     except:
         return None
@@ -75,9 +80,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    client_infos = extract_geoloc_data_ipinfo("")
-    if client_infos["ip"] == '':
-        client_infos["ip"] = fall_back_own_ip()
+    myip = fall_back_own_ip()
+
+    client_infos = extract_geoloc_data(myip)
 
     dns_db_path = "db/nameservers_%s.csv" % args.dns_list
 
@@ -113,7 +118,7 @@ if __name__ == "__main__":
 
     # get the informations from the dns servers from the csv file or retreive it
 
-    dns_servers_infoss = [extract_geoloc_data_ipinfo(dnsip) for dnsip in
+    dns_servers_infoss = [extract_geoloc_data(dnsip) for dnsip in
                           dnsips if isinstance(dnsip, str)] + [extract_geoloc_data_from_csv_line(dnsip) for dnsip in
                                                                dnsips if isinstance(dnsip, list)]
 
@@ -129,11 +134,11 @@ if __name__ == "__main__":
                                                             lifetime=args.timeout,
                                                             use_bind9=args.use_bind9)
 
-            # resolved_infos = extract_geoloc_data(resolved_ips[0])
-            # resolved_infos = min([candiate_info for candiate_info in[extract_geoloc_data_ipinfo(resolved_ip) for resolved_ip in resolved_ips]],key=lambda x: get_distance_in_km(my_data, x))
+            # resolved_infos = extract_geoloc_data_db(resolved_ips[0])
+            # resolved_infos = min([candiate_info for candiate_info in[extract_geoloc_data(resolved_ip) for resolved_ip in resolved_ips]],key=lambda x: get_distance_in_km(my_data, x))
             for resolved_info_index, resolved_infos in enumerate([candiate_info for candiate_info in
-                                                                  [extract_geoloc_data_ipinfo(resolved_ip,
-                                                                                              resolved_target) for
+                                                                  [extract_geoloc_data(resolved_ip,
+                                                                                       resolved_target) for
                                                                    resolved_ip in resolved_ips]][:A_SERVERS_LIMIT], 1):
                 asn = resolved_infos.get("org", "N/A")
                 distance_content_dns = get_distance_in_km(dns_server_infos, resolved_infos)

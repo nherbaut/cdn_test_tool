@@ -24,7 +24,7 @@ if __name__ == "__main__":
         if dnsip == '':
             continue
         geoloc_data = extract_geoloc_data_ipinfo(dnsip)
-        #geoloc_data = extract_geoloc_data(dnsip)
+        #geoloc_data = extract_geoloc_data_db(dnsip)
         # geoloc_data["asn"] = extract_geoloc_data_ipinfo(geoloc_data["ip"])["org"]
         geoloc_datas.append(geoloc_data)
         print(geoloc_data)

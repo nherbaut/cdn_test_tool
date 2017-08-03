@@ -16,9 +16,9 @@ def draw_map(input_csv_path, output_image_path):
     from mpl_toolkits.basemap import Basemap
 
     if output_image_path is not None:
-        initial_draw_size_scaling_factor = 0.5
+        initial_draw_size_scaling_factor = 1
     else:
-        initial_draw_size_scaling_factor = 10
+        initial_draw_size_scaling_factor = 1
 
     with open(input_csv_path, "r") as f:
         reader = csv.DictReader(f)
@@ -39,8 +39,8 @@ def draw_map(input_csv_path, output_image_path):
             zorders[row["dns_iso"]] = k
 
         draw_size_scaling_factror = initial_draw_size_scaling_factor
-        m = Basemap(projection='merc', llcrnrlat=-80, urcrnrlat=80, \
-                    llcrnrlon=-180, urcrnrlon=180, lat_ts=20, resolution='c')
+        m = Basemap(width=15.e6, height=10.e6, \
+                    projection='gnom', lat_0=45, lon_0=-60)
         m.drawmapboundary(fill_color='#99ffff')
         m.fillcontinents(color='#cc9966', lake_color='#99ffff')
 
@@ -50,29 +50,36 @@ def draw_map(input_csv_path, output_image_path):
 
         me_hop = list(data.values())[0][2]
         my_lat, my_long = m(me_hop[1][1], me_hop[1][0])
-        m.scatter(my_lat, my_long, 30 * initial_draw_size_scaling_factor, marker='H', color="black", zorder=300, label="client")
+        m.scatter(my_lat, my_long, 30 * initial_draw_size_scaling_factor * 2, marker='H', color="black", zorder=300,
+                  label="client")
 
-        for index,(k, (dns_hop, content_hop, me_hop, routes)) in enumerate(data.items(),1):
+        for index, (k, (dns_hop, content_hop, me_hop, routes)) in enumerate(data.items(), 1):
+
+            m.scatter(my_lat, my_long, 30 * draw_size_scaling_factror, marker='H', color=colors[k], zorder=400)
 
             hop1_lat, hop1_long = m(content_hop[1][1], content_hop[1][0], )
-            m.scatter(hop1_lat, hop1_long, 20 * draw_size_scaling_factror, marker='o', color=colors[k], zorder=200+zorders[k], label="%s Content" % k)
+            m.scatter(hop1_lat, hop1_long, 40 * draw_size_scaling_factror, marker='o', color=colors[k],
+                      zorder=200 + zorders[k], label="%s Content" % k)
 
             hop1_lat, hop1_long = m(dns_hop[1][1], dns_hop[1][0], )
-            m.scatter(hop1_lat, hop1_long, 10 * initial_draw_size_scaling_factor, marker='^', color=colors[k], zorder=200+zorders[k], label="%s DNS" % k)
+            m.scatter(hop1_lat, hop1_long, 30 * initial_draw_size_scaling_factor, marker='^', color=colors[k],
+                      zorder=200 + zorders[k], label="%s DNS" % k)
 
-            m.plot([my_lat, hop1_lat], [my_long, hop1_long], zorder=100+zorders[k], color=colors[k], linestyle="dashed",
-                   lw=1 * draw_size_scaling_factror)
+            m.plot([my_lat, hop1_lat], [my_long, hop1_long], zorder=10 + zorders[k], color=colors[k],
+                   linestyle="dashed",
+                   lw=1 * initial_draw_size_scaling_factor)
 
             routes = [me_hop] + routes + [content_hop]
             for hop1, hop2 in zip(routes, routes[1:]):
                 hop1_lat, hop1_long = m(hop1[1][1], hop1[1][0], )
                 hop2_lat, hop2_long = m(hop2[1][1], hop2[1][0], )
-                m.scatter(hop2_lat, hop2_long, 10 * initial_draw_size_scaling_factor, marker='.', color=colors[k], zorder=200+zorders[k])
-                m.plot([hop1_lat, hop2_lat], [hop1_long, hop2_long], lw=3 * draw_size_scaling_factror, zorder=100+zorders[k], color=colors[k],
+                m.scatter(hop2_lat, hop2_long, 10 * initial_draw_size_scaling_factor, marker='.', color=colors[k],
+                          zorder=200 + zorders[k])
+                m.plot([hop1_lat, hop2_lat], [hop1_long, hop2_long], lw=3 * draw_size_scaling_factror,
+                       zorder=100 + zorders[k], color=colors[k],
                        linestyle="solid")
 
-
-            draw_size_scaling_factror=initial_draw_size_scaling_factor*(1-index/5)
+            draw_size_scaling_factror = initial_draw_size_scaling_factor * (1 - index / len(data))
 
         plt.legend(loc='best',
                    fancybox=True, shadow=True, ncol=3, fontsize='x-small')

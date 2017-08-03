@@ -6,6 +6,7 @@ RUN wget https://github.com/matplotlib/basemap/archive/v1.1.0.zip
 RUN unzip v1.1.0.zip
 WORKDIR /basemap-1.1.0
 RUN python ./setup.py install
+RUN pip install geopy
 RUN echo "nameserver 127.0.0.1" > /etc/resolv.conf
 RUN echo "#!/usr/bin/env bash \n cd /root \n ./dns_handler.py -s 8.8.8.8 \n /root/anycast.py --use_bind9 \"\$@\" " > /root/bootstrap.sh
 RUN mkdir -p /root/.config/matplotlib/
