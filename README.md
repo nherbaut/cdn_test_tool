@@ -10,6 +10,9 @@ Run this tool as a docker container
 docker pull nherbaut/cdn_test_tool
 ```
 
+# Results examples #
+
+[Showcase of the tool on my website][http://data.nextnet.top/cdn]
 
 # Usage # 
 
