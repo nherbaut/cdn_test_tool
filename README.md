@@ -1,4 +1,4 @@
-[![](https://images.microbadger.com/badges/version/nherbaut/cdn_test_tool.svg)](https://microbadger.com/images/nherbaut/cdn_test_tool "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/nherbaut/cdn_test_tool.svg)](https://microbadger.com/images/nherbaut/cdn_test_tool "checkout on dockerhub")
 
 # Presentation #
 
