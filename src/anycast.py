@@ -62,12 +62,12 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--dns_servers', nargs='+', help='a list of dns servers to compute from', default=None)
     parser.add_argument('--target', '-t', default="md1.libe.com",
                         help='the domain name to resolve or URL of video provider to resolve')
-    parser.add_argument('--timeout', default=1, type=float,
+    parser.add_argument('--timeout', default=5, type=float,
                         help='Timeout for the DNS queries')
     parser.add_argument('-c', '--countries', nargs='+', help='a list of countries to select the DNS from', default=None)
     parser.add_argument('--dns-list', help='list of dns to use e.g. americas, eu, asia, world', default="world")
 
-    parser.add_argument('--limit', default=99, type=int,
+    parser.add_argument('--limit', default=3, type=int,
                         help='Maximum number of dns servers to query')
     parser.add_argument('--use_bind9', action='store_true',
                         help='use bind9 to change DNS resolver')

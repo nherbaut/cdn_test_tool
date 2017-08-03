@@ -68,6 +68,7 @@ def extract_geoloc_data_ipinfo(ip, target_hostname=None):
 
                 res = zip(geoloc_data_keys, [ip, city, country, location, asn])
             else:
+                sys.stderr("a problem occured when using ipinfo.io service. Make sure you have not exceeded the allowance and try again")
                 res = zip(geoloc_data_keys, [ip, None, None, None, "N/A"])
         except (requests.exceptions.ConnectionError, json.decoder.JSONDecodeError):
             res = zip(geoloc_data_keys, [ip, None, None, None, "N/A"])

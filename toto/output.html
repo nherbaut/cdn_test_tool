@@ -1,0 +1,46 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>nextnet.top</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/svg-pan-zoom.min.js"></script>
+
+
+</head>
+<body>
+<center>
+
+<center>
+<div id="mytable">
+ <table>
+<thead>
+<tr><th>dns_ip       </th><th>cont_ip       </th><th>my_ip         </th><th>dns_iso  </th><th>content_iso  </th><th>me_iso  </th><th style="text-align: right;">  cnd_count_km</th><th style="text-align: right;">  me_count_km</th><th>dns_as                                                            </th><th>cont_as                </th></tr>
+</thead>
+<tbody>
+<tr><td>194.160.84.37</td><td>151.249.90.135</td><td>173.239.240.98</td><td>SK       </td><td>DE           </td><td>US      </td><td style="text-align: right;">           798</td><td style="text-align: right;">         6967</td><td>AS2607 Zdruzenie pouzivatelov Slovenskej akademickej datovej siete</td><td>AS36408 CDNetworks Inc.</td></tr>
+<tr><td>             </td><td>              </td><td>              </td><td>         </td><td>             </td><td>        </td><td style="text-align: right;">           798</td><td style="text-align: right;">         6967</td><td>                                                                  </td><td>                       </td></tr>
+</tbody>
+</table>
+ </div>
+
+<object class="img-responsive" id="worldmap" type="image/svg+xml" data="output.svg" style="width: 80%;  border:1px solid black; " >Your browser does not support SVG</object>
+
+
+
+<script>
+$( document ).ready(function() {
+$("#mytable table").addClass("table table-striped table-bordered table-hover");
+$("#worldmap").bind('load', function(){svgPanZoom('#worldmap', {zoomEnabled: true,controlIconsEnabled: true});});
+
+
+
+
+});
+</script>
+
+</body>
+</html> 

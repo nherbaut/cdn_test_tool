@@ -19,9 +19,9 @@ docker pull nherbaut/cdn_test_tool
 ```
 usage: [-h] [-s DNS_SERVERS [DNS_SERVERS ...]] [--target TARGET]
                   [--timeout TIMEOUT] [-c COUNTRIES [COUNTRIES ...]]
-                  [--dns-list DNS_LIST] [--limit LIMIT] [--use_bind9]
-                  [--list-countries] [--output-format OUTPUT_FORMAT]
-                  [-output-file OUTPUT_FILE]
+                  [--dns-list DNS_LIST] [--limit LIMIT] 
+                  [--list-countries]
+                  
 
 resolve a domain with a list of dns servers, and computer the distance between
 the DNS server and the resolved server
@@ -39,12 +39,6 @@ optional arguments:
   --dns-list DNS_LIST   list of dns to use e.g. americas, eu, asia, world
   --limit LIMIT         Maximum number of dns servers to query
   --list-countries      use bind9 to change DNS resolver
-  --output-format OUTPUT_FORMAT
-                        format of the output, one of "plain, simple, grid,
-                        fancy_grid, pipe, orgtbl, jira, psql, rst, mediawiki,
-                        moinmoin, html, latex, latex_booktabs, textile"
-  -output-file OUTPUT_FILE
-                        name of the file where to write output
 
 ```
 
