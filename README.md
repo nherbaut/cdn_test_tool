@@ -35,7 +35,6 @@ optional arguments:
                         a list of countries to select the DNS from
   --dns-list DNS_LIST   list of dns to use e.g. americas, eu, asia, world
   --limit LIMIT         Maximum number of dns servers to query
-  --use_bind9           use bind9 to change DNS resolver
   --list-countries      use bind9 to change DNS resolver
   --output-format OUTPUT_FORMAT
                         format of the output, one of "plain, simple, grid,
@@ -47,10 +46,10 @@ optional arguments:
 ```
 
 
-# Examples #
+# Example #
 
 ```
-docker run --dns=127.0.0.1 -v $PWD/output:/root/res  /nherbaut/cdn_test_tool -c FR DK US CA GB IT -t a0.muscache.com
+docker run -v $PWD/output:/root/res  /nherbaut/cdn_test_tool -c FR DK US CA GB IT -t a0.muscache.com
 ```
 
 check of IPs with DNS in these countries FR DK US CA GB IT to see what is the resolved content server IP for a0.muscache.com.
