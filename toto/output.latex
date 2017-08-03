@@ -1,8 +1,0 @@
-\begin{tabular}{llllllrrll}
-\hline
- dns\_ip        & cont\_ip        & my\_ip          & dns\_iso   & content\_iso   & me\_iso   &   cnd\_count\_km &   me\_count\_km & dns\_as                                                             & cont\_as                 \\
-\hline
- 194.160.84.37 & 151.249.90.135 & 173.239.240.98 & SK        & DE            & US       &            798 &          6967 & AS2607 Zdruzenie pouzivatelov Slovenskej akademickej datovej siete & AS36408 CDNetworks Inc. \\
-               &                &                &           &               &          &            798 &          6967 &                                                                    &                         \\
-\hline
-\end{tabular}
