@@ -1,3 +1,5 @@
+[![](https://images.microbadger.com/badges/version/nherbaut/cdn_test_tool.svg)](https://microbadger.com/images/nherbaut/cdn_test_tool "Get your own version badge on microbadger.com")
+
 # Presentation #
 
 This tool studies the relation between content ip, dns ip and client ip. It generates output as HTML, Latex and world map graphics
